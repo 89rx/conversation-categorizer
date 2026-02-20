@@ -19,6 +19,12 @@ export async function POST(request: Request) {
       You are an expert conversational analyst. I will provide you with a raw chat transcript. 
       Read the ENTIRE transcript and group the conversation into 4 to 5 distinct semantic blocks based on the topics discussed.
 
+      CRITICAL RULE FOR CATEGORY NAMES:
+      Do not use generic, single-word keywords. Category names must be highly specific, descriptive, and professional. 
+      
+      Examples of BAD generic categories: "Pricing", "Competitors", "Hiring", "Trials", "Numbers"
+      Examples of GOOD specific categories: "Pricing Strategy", "Starting Price Points", "Competitor Analysis", "Free Trial Strategy", "Sales Team Building"
+
       Respond ONLY with a valid JSON object matching this exact schema:
       {
         "blocks": [
@@ -38,14 +44,12 @@ export async function POST(request: Request) {
       """
     `;
 
-    // Call Gemini 2.5 Flash
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: prompt,
       config: {
-        // This is a pro-move: forces the model to guarantee valid JSON output
         responseMimeType: "application/json", 
-        temperature: 0.2, // Low temperature for more deterministic categorization
+        temperature: 0.1, 
       }
     });
 
@@ -55,10 +59,8 @@ export async function POST(request: Request) {
       throw new Error("No text returned from Gemini");
     }
 
-    // Parse the JSON string returned by Gemini into a TypeScript object
     const parsedData = JSON.parse(textResponse);
 
-    // Return the categorized blocks to the frontend
     return NextResponse.json(parsedData);
 
   } catch (error) {

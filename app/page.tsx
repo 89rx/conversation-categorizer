@@ -78,7 +78,7 @@ export default function Home() {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-4">
           <textarea
             className="w-full h-48 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y text-black"
-            placeholder="Paste your conversation here...&#10;&#10;User: How do I price my SaaS product?&#10;Assistant: Consider these pricing strategies..."
+            placeholder="Paste your conversation here..."
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             disabled={isLoading}
