@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenAI } from '@google/genai';
 
-// Initialize the Gemini client
 const ai = new GoogleGenAI({});
 
 export async function POST(request: Request) {
@@ -9,7 +8,6 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { conversation } = body;
 
-    // Basic validation
     if (!conversation || typeof conversation !== 'string') {
       return NextResponse.json(
         { error: 'A conversation string is required.' },
@@ -17,7 +15,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // The prompt instructs Gemini to act as an analyst and strictly return JSON
     const prompt = `
       You are an expert conversational analyst. I will provide you with a raw chat transcript. 
       Read the ENTIRE transcript and group the conversation into 4 to 5 distinct semantic blocks based on the topics discussed.
